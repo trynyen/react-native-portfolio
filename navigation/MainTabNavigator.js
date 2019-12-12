@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
+import WelcomeScreen from '../screens/WelcomeScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -13,11 +14,27 @@ const config = Platform.select({
   default: {},
 });
 
+const WelcomeStack = createStackNavigator(
+  {
+    Welcome: WelcomeScreen,
+  },
+  config
+);
+
+WelcomeStack.navigationOptions = {
+  tabBarLabel: 'Welcome',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused} name={Platform.OS === 'ios' ? 'ios-flower' : 'md-flower'}
+    />
+  ),
+};
+
+WelcomeStack.path = '';
+
 const HomeStack = createStackNavigator(
   {
-    // Home: HomeScreen,
-    Home: {screen: HomeScreen},
-    Profile: {screen: ProfileScreen},
+    Home: HomeScreen,
   },
   config
 );
@@ -71,6 +88,7 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
+  WelcomeStack,
   HomeStack,
   LinksStack,
   SettingsStack,
